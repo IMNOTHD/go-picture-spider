@@ -1,0 +1,40 @@
+// protoc --go_out=plugins=grpc:. picture_spider.proto
+// protoc --grpc-gateway_out=logtostderr=true:. picture_spider.proto
+
+syntax = "proto3";
+
+package proto.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "v1";
+
+service PictureSpider {
+    rpc PictureUrl (PictureUrlRequest) returns (PictureUrlResponse) {
+        option (google.api.http) = {
+            get: "/api/picture-url"
+        };
+    }
+}
+
+message PictureUrlRequest {
+    string type = 1;
+    string id = 2;
+    int64 manga = 3;
+    bool cache = 4;
+    bool uploadSM = 5;
+}
+
+message PictureUrlData {
+    string originalUrl = 1;
+    string referer = 2;
+    string cacheUrl = 3;
+    string smUrl = 4;
+    bool isR18 = 5;
+}
+
+message PictureUrlResponse {
+    int32 code = 1;
+    string msg = 2;
+    PictureUrlData data = 3;
+}
